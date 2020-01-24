@@ -21,9 +21,12 @@ var debug;
 var reproduction = [0, 0];
 
 var most_adapted = {
-  health: 0,
+  health: [0],
   myDNA: [],
-  howMany: 0,
+  n_mate: [],
+  n_mitose: [],
+  isChild: [],
+  n_cani: []
 };
 
 var generation = 0;
@@ -96,12 +99,14 @@ function draw() {
         reproduction[0]++;
         document.querySelector('#mitose').textContent = `${reproduction[0]}`;
       }
-      if (random(1) > .95) {
+      if (random(1) > .2) {
         population.forEach(mate => {
           if (v.position === mate.position && random(10) > 9.999) {
-            let puppy = mateSucess(v, mate);
+            let res = v.mateSucess(mate, reproduction[1]);
+            let puppy = res[0];
+            reproduction[1] = res[1];
+            puppy.isChild = true;
             population.push(puppy);
-            reproduction[1]++;
             document.querySelector('#mate').textContent = `${reproduction[1]}`;
           }
         });
@@ -135,34 +140,33 @@ function draw() {
 function isAdapted(individuo) {
   let best_health = individuo.health;
   let best_DNA = individuo.dna;
-  if (individuo.health > most_adapted.health) {
-    most_adapted.myDNA = best_DNA;
-    most_adapted.health = best_health;
-    most_adapted.howMany++;
-    document.querySelector('#time-stamp').textContent = `${most_adapted.howMany}`;
-    document.querySelector('#most_healthy').textContent = `${most_adapted.health}`;
-    document.querySelector('#dna_0').textContent = `${most_adapted.myDNA[0]}`;
-    document.querySelector('#dna_1').textContent = `${most_adapted.myDNA[1]}`;
-    document.querySelector('#dna_2').textContent = `${most_adapted.myDNA[2]}`;
-    document.querySelector('#dna_3').textContent = `${most_adapted.myDNA[3]}`;
+  let best_n_mate = individuo.n_mate;
+  let best_n_mitose = individuo.n_mitose;
+  let best_isChild = individuo.isChild;
+  let best_canibalism = individuo.canibalism;
+  let old_l;
+  most_adapted.health.length ? old_l = most_adapted.health.length - 1 : old_l = 0;
+  if (individuo.health > most_adapted.health[old_l]) {
 
-  }
-}
+    most_adapted.myDNA.push(best_DNA);
+    l1 = most_adapted.myDNA.length - 1;
+    most_adapted.health.push(best_health);
+    l2 = most_adapted.health.length - 1;
+    most_adapted.n_mate.push(best_n_mate);
+    most_adapted.n_mitose.push(best_n_mitose);
+    most_adapted.isChild.push(best_isChild);
+    most_adapted.n_cani.push(best_canibalism);
 
-function mateSucess(mate_1, mate_2) {
-  let choice = [];
-  if (mate_1.position == mate_2.position) {
-    for (let i = 0; i < 4; i++) {
-      choice.push(random_DNA(mate_1, mate_2, i));
-    }
+    document.querySelector('#time-stamp').textContent = `${most_adapted.health.length}`;
+    document.querySelector('#most_healthy').textContent = `${most_adapted.health[l2]}`;
+    document.querySelector('#dna_0').textContent = `${most_adapted.myDNA[l1][0]}`;
+    document.querySelector('#dna_1').textContent = `${most_adapted.myDNA[l1][1]}`;
+    document.querySelector('#dna_2').textContent = `${most_adapted.myDNA[l1][2]}`;
+    document.querySelector('#dna_3').textContent = `${most_adapted.myDNA[l1][3]}`;
+    document.querySelector('#child').textContent = `${most_adapted.isChild[l1]}`;
+    document.querySelector('#n-mitose').textContent = `${most_adapted.n_mitose[l1]}`;
+    document.querySelector('#n-mate').textContent = `${most_adapted.n_mate[l1]}`;
+    document.querySelector('#cani').textContent = `${most_adapted.n_cani[l1]}`;
   }
-  return new Vehicle(mate_1.position.x, mate_2.position.y, choice);
-}
 
-function random_DNA(mate_1, mate_2, index) {
-  if (random(1) > .5) {
-    return mate_1.dna[index];
-  } else {
-    return mate_2.dna[index];
-  }
 }
