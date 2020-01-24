@@ -1,15 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/p5@0.10.2/lib/p5.js"></script>
-    <script src="sketch.js"></script>
-    <script src="main.js"></script>
+  <script src="p5.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script language="javascript" type="text/javascript" src="vehicle.js"></script>
+  <script language="javascript" type="text/javascript" src="sketch.js"></script>
+  <link rel="stylesheet" href="css/main.min.css">
 </head>
+
 <body>
-    
+  <div id="canvascontainer"></div>
+  <div id="interface">
+    <p>
+      debug: <input id="debug" type="checkbox" checked></input>
+    </p>
+  </div>
+  <p class="title">
+    Generation:
+    <br>
+    <p id="gen">0</p>
+  </p>
+  <div class="panel">
+    <span class="title-dna">Population:<span class="ml-2" id="pop">0</span></span>
+    <span>Most Healthy Unit (health points):</span><br> <span class="ml-2" id="most_healthy"></span>
+    <div class="dna-panel mt-5 mr-5">
+      <ul>Most Healthy Unit DNA: <br>
+        <span id="time-stamp"></span>º unit</ul>
+      <span class="title-dna">
+        Attraction/Repulsion to food: <br>
+        <li id="dna_0"></li>
+      </span>
+      <span class="title-dna">
+        Attraction/Repulsion to poison: <br>
+        <li id="dna_1"></li>
+      </span>
+      <span class="title-dna">
+        Radius to sense food: <br>
+        <li id="dna_2"></li>
+      </span>
+      <span class="title-dna">
+        Radius to sense poison: <br>
+        <li id="dna_3">
+      </span>
+    </div>
+  </div>
+  <div class="panel-2">
+
+    <span class="title-dna">Mitose:<span class="ml-2" id="mitose">0</span></span>
+    <div class="birth-panel mr-5">
+      <span class="title-dna">Acasalamento: <span class="ml-1" id="mate">0</span></span>
+    </div>
+  </div>
 </body>
+
 </html>
