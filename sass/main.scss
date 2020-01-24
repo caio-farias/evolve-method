@@ -35,8 +35,8 @@ p#gen {
 
 .panel-2 {
     position: fixed;
-    bottom: 30px;
-    right: 100px;
+    bottom: 10px;
+    right: 130px;
     display: flex;
     flex-direction: column;
 
@@ -44,6 +44,15 @@ p#gen {
         display: flex;
         flex-direction: column;
     }
+}
+
+.dna-panel-2 {
+    z-index: 99;
+    position: fixed;
+    right: 300px !important;
+    bottom: 100px;
+    display: flex;
+    flex-direction: column;
 }
 
 #most_healthy,
