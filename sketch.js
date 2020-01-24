@@ -18,6 +18,8 @@ var nutrition = [0.1, -1];
 // Show additional info on DNA?
 var debug;
 
+// var evolve_m = 0.0002;
+
 var reproduction = [0, 0];
 
 var most_adapted = {
@@ -30,6 +32,8 @@ var most_adapted = {
 };
 
 var generation = 0;
+
+var db;
 
 function setup() {
 
@@ -76,7 +80,7 @@ function draw() {
   // Go through all vehicles
   for (var i = population.length - 1; i >= 0; i--) {
     var v = population[i];
-    isAdapted(population[i]);
+
     // Eat the food (index 0)
     v.eat(food, 0);
     // Eat the poison (index 1)
@@ -87,7 +91,7 @@ function draw() {
     // Update and draw
     v.update();
     v.display();
-
+    isAdapted(population[i]);
     // If the vehicle has died, remove
     if (v.dead()) {
       population.splice(i, 1);
@@ -109,6 +113,7 @@ function draw() {
             population.push(puppy);
             document.querySelector('#mate').textContent = `${reproduction[1]}`;
           }
+          v.canib(mate);
         });
       }
     }
@@ -130,9 +135,10 @@ function draw() {
   if (!population.length) {
     generation++;
     document.querySelector('#gen').textContent = `${generation}`;
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 10 + round(generation / 10); i++) {
       population[i] = new Vehicle(random(width), random(height));
     }
+    saveAsJson(most_adapted);
   }
 }
 
@@ -157,16 +163,22 @@ function isAdapted(individuo) {
     most_adapted.isChild.push(best_isChild);
     most_adapted.n_cani.push(best_canibalism);
 
-    document.querySelector('#time-stamp').textContent = `${most_adapted.health.length}`;
+    document.querySelector('#time-stamp').textContent = `${l2+1}`;
     document.querySelector('#most_healthy').textContent = `${most_adapted.health[l2]}`;
     document.querySelector('#dna_0').textContent = `${most_adapted.myDNA[l1][0]}`;
     document.querySelector('#dna_1').textContent = `${most_adapted.myDNA[l1][1]}`;
     document.querySelector('#dna_2').textContent = `${most_adapted.myDNA[l1][2]}`;
     document.querySelector('#dna_3').textContent = `${most_adapted.myDNA[l1][3]}`;
-    document.querySelector('#child').textContent = `${most_adapted.isChild[l1]}`;
-    document.querySelector('#n-mitose').textContent = `${most_adapted.n_mitose[l1]}`;
-    document.querySelector('#n-mate').textContent = `${most_adapted.n_mate[l1]}`;
-    document.querySelector('#cani').textContent = `${most_adapted.n_cani[l1]}`;
+    document.querySelector('#caniRate').textContent = `rounded rate: ${round(most_adapted.myDNA[l1][4])} %`;
+    document.querySelector('#child').textContent = `${most_adapted.isChild[most_adapted.isChild.length-1]}`;
+    document.querySelector('#n-mitose').textContent = `${most_adapted.n_mitose[most_adapted.n_mitose.length-1]}`;
+    document.querySelector('#n-mate').textContent = `${most_adapted.n_mate[most_adapted.n_mate.length-1]}`;
+    document.querySelector('#cani').textContent = `${most_adapted.n_cani[most_adapted.n_cani.length-1][0]} times / ${most_adapted.n_cani[most_adapted.n_cani.length-1][0]*.02} health points `;
+    document.querySelector('#cani-kills').textContent = `${most_adapted.n_cani[most_adapted.n_cani.length-1][1]} kills `;
   }
+}
 
+function saveAsJson(data) {
+  var json = JSON.stringify(data);
+  saveJSON(data, `gen-${generation}.json`);
 }

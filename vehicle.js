@@ -18,7 +18,7 @@ function Vehicle(x, y, dna) {
     this.n_mate = 0;
     this.n_mitose = 0;
     this.isChild = false;
-    this.canibalism = 0;
+    this.canibalism = [0, 0];
 
     // Did it receive DNA to copy?
     if (dna instanceof Array) {
@@ -47,7 +47,9 @@ function Vehicle(x, y, dna) {
         // 1: Attraction/Repulsion to poison
         // 2: Radius to sense food
         // 3: Radius to sense poison
-        this.dna = [random(-maxf, maxf), random(-maxf, maxf), random(5, 100), random(5, 100)];
+        // 4: Canibalism rate
+        // 5: Predator attributes?
+        this.dna = [random(-maxf, maxf), random(-maxf, maxf), random(5, 100), random(5, 100), random(5, 100)];
     }
 
     // Health
@@ -66,7 +68,10 @@ Vehicle.prototype.update = function () {
     this.acceleration.mult(0);
 
     // Slowly die unless you eat
-    this.health -= 0.002;
+    this.health -= 0.005;
+    // if (random(2) > .8) {
+    //     this.health -= 0.005 - evolve_m;
+    // }
 
 };
 
@@ -212,12 +217,16 @@ Vehicle.prototype.boundaries = function () {
     }
 }
 
-Vehicle.prototype.canibalism = function (target) {
-    this.seek(target);
-    if ((this.position.sub(target.position)).mag() < 5) {
-        target.health -= .2;
-        this.health += .2;
-        this.canibalism++;
+Vehicle.prototype.canib = function (target) {
+    if (createVector(target.position.mag(), this.position.mag()).mag() < 400) {
+        if (random(1) > this.dna[3] / 100) {
+            target.health -= .02;
+            this.health += .02;
+            this.canibalism[0]++;
+            if (target.health < 0) {
+                this.canibalism[1]++;
+            }
+        }
     }
 }
 

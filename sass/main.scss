@@ -5,8 +5,8 @@
 
 p#gen {
     position: fixed;
-    top: 0px;
-    right: 90px;
+    top: 30px;
+    right: 300px;
     font-size: 2rem;
     color: #325928;
 
@@ -14,15 +14,15 @@ p#gen {
 
 .title {
     position: fixed;
-    top: 0px;
-    right: 130px;
+    top: 30px;
+    right: 330px;
     font-size: 2rem;
     color: #5CA54A;
 }
 
 .panel {
     position: fixed;
-    top: 150px;
+    top: 30px;
     right: 10px;
     display: flex;
     flex-direction: column;
@@ -35,7 +35,7 @@ p#gen {
 
 .panel-2 {
     position: fixed;
-    bottom: 10px;
+    top: 400px;
     right: 130px;
     display: flex;
     flex-direction: column;
@@ -47,12 +47,19 @@ p#gen {
 }
 
 .dna-panel-2 {
-    z-index: 99;
     position: fixed;
-    right: 300px !important;
-    bottom: 100px;
+    right: 330px !important;
+    bottom: 90px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    margin-block-start: 0 !important;
+
+    ul {
+        text-align: start;
+        padding: 0 !important;
+        color: rebeccapurple;
+    }
 }
 
 #most_healthy,
@@ -79,6 +86,7 @@ li[id],
 }
 
 ul {
+    padding: 0 !important;
     font-weight: bold;
     color: #040632;
 }
